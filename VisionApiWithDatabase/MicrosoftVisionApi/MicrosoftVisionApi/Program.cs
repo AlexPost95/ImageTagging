@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,30 @@ using System.Threading.Tasks;
 
 namespace MicrosoftVisionApi
 {
-    public class Rootobject
+    public class Tag
     {
-        public Tag[] tags { get; set; }
-        public string requestId { get; set; }
-        public Metadata metadata { get; set; }
+        public string name { get; set; }
+        public double confidence { get; set; }
     }
 
     public class Metadata
     {
-        public int height { get; set; }
         public int width { get; set; }
+        public int height { get; set; }
         public string format { get; set; }
     }
 
-    public class Tag
+    public class ImageObject
     {
-        public string name { get; set; }
-        public float confidence { get; set; }
-        public string hint { get; set; }
+        public List<Tag> tags { get; set; }
+        public string requestId { get; set; }
+        public Metadata metadata { get; set; }
     }
 
     static class Program
     {
+        static private int imageId = 0;
+
         const string subscriptionKey = "31495f44467e40e5aa8b017852219356";
 
         const string uriBase =
@@ -66,14 +68,14 @@ namespace MicrosoftVisionApi
             SqlConnection myConnection = new SqlConnection();
             myConnection.ConnectionString = "Data Source=LAPTOP-OBPEB7SF;" + "Initial Catalog=ImageTagging;" + "Integrated Security=SSPI;";
 
-            //try
-            //{
-            //    myConnection.Open();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.ToString());
-            //}
+            try
+            {
+                myConnection.Open();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
 
             try
             {
@@ -112,13 +114,19 @@ namespace MicrosoftVisionApi
                 string contentString = await response.Content.ReadAsStringAsync();
 
                 // Display the JSON response.
-                Console.WriteLine("\nResponse:\n\n{0}\n",
-                    JToken.Parse(contentString).ToString());
-                //var jo = JObject.Parse(contentString);
-                //var id = jo["tags"][1]["name"].ToString();
-                //Console.WriteLine(jo);
-                SqlCommand myCommand = new SqlCommand($"INSERT INTO ImagesWithTags (picture, tags) Values ('{imageFilePath}', '{JToken.Parse(contentString)}')", myConnection);
-                //myCommand.ExecuteNonQuery();
+                Console.WriteLine("\nResponse:\n\n{0}\n", JToken.Parse(contentString).ToString());
+
+                ImageObject image = JsonConvert.DeserializeObject<ImageObject>(contentString);
+                SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture) Values ('{imageId}', '{imageFilePath}')", myConnection);
+                insertImageCommand.ExecuteNonQuery();
+
+                foreach (Tag tag in image.tags)
+                {
+                    Console.WriteLine(tag.name);
+                    SqlCommand insertTagCommand = new SqlCommand($"INSERT INTO Tag (PictureID, Tag) Values ('{imageId}', '{tag.name}')", myConnection);
+                    insertTagCommand.ExecuteNonQuery();
+                }
+                imageId++;
             }
             catch (Exception e)
             {
