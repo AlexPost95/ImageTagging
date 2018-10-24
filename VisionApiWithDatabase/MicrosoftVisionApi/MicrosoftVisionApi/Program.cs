@@ -43,7 +43,7 @@ namespace MicrosoftVisionApi
         static async Task MakeAnalysisRequest(string imageFilePath)
         {
             SqlConnection myConnection = new SqlConnection();
-            myConnection.ConnectionString = "Data Source=DESKTOP-NCK5Q5P;" + "Initial Catalog=ImageTagging;" + "Integrated Security=SSPI;";
+            myConnection.ConnectionString = "Data Source=LAPTOP-OBPEB7SF;" + "Initial Catalog=ImageTagging;" + "Integrated Security=SSPI;";
 
             //try
             //{
