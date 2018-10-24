@@ -1,0 +1,10 @@
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\MicrosoftVisionApi.exe.config
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\MicrosoftVisionApi.exe
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\MicrosoftVisionApi.pdb
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\Newtonsoft.Json.dll
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\Newtonsoft.Json.xml
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.csprojAssemblyReference.cache
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.csproj.CoreCompileInputs.cache
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.csproj.CopyComplete
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.exe
+C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.pdb
