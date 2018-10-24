@@ -10,6 +10,27 @@ using System.Threading.Tasks;
 
 namespace MicrosoftVisionApi
 {
+    public class Rootobject
+    {
+        public Tag[] tags { get; set; }
+        public string requestId { get; set; }
+        public Metadata metadata { get; set; }
+    }
+
+    public class Metadata
+    {
+        public int height { get; set; }
+        public int width { get; set; }
+        public string format { get; set; }
+    }
+
+    public class Tag
+    {
+        public string name { get; set; }
+        public float confidence { get; set; }
+        public string hint { get; set; }
+    }
+
     static class Program
     {
         const string subscriptionKey = "31495f44467e40e5aa8b017852219356";
