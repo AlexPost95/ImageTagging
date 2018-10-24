@@ -19,38 +19,19 @@ namespace MicrosoftVisionApi
 
         static void Main()
         {
+            string[] filePaths = Directory.GetFiles(@"C:/Users/alexp/Documents/Overig/ImageTagging/VisionApiWithDatabase/ImagesToBeTagged");
 
-            Console.WriteLine("Analyze an image:");
-            Console.Write("Enter the path to the image you wish to analyze: ");
-            string imageFilePath = "C:/Users/alex.post/Documents/Alex Post/Programmeeropdrachten/Image tagging/MicrosoftVisionApi/MicrosoftVisionApi/scenery.jpg";
-            List<string> images = new List<string>();
-            images.Add("C:/Users/alex.post/Documents/Alex Post/Programmeeropdrachten/Image tagging/MicrosoftVisionApi/MicrosoftVisionApi/scenery.jpg");
-            images.Add("C:/Users/alex.post/Documents/Alex Post/Programmeeropdrachten/Image tagging/MicrosoftVisionApi/MicrosoftVisionApi/Paramore.jpg");
-            images.Add("C:/Users/alex.post/Documents/Alex Post/Programmeeropdrachten/Image tagging/MicrosoftVisionApi/MicrosoftVisionApi/stallone.jpg");
-
-            string[] filePaths = Directory.GetFiles(@"C:\Users\alex.post\Documents\Alex Post\Programmeeropdrachten\Image tagging\ImagesToBeTagged", "*.jpeg");
-
-            //string imageFilePath = Console.ReadLine();
-
-            if (File.Exists(imageFilePath))
+            foreach (string image in filePaths)
             {
-                // Make the REST API call.
-                Console.WriteLine("\nWait a moment for the results to appear.\n");
-                MakeAnalysisRequest(imageFilePath).Wait();
-                //foreach (string image in images)
-                //{
-                //    MakeAnalysisRequest(image).Wait();
-                //}
-                //foreach (string image in filePaths)
-                //{
-                //    MakeAnalysisRequest(image).Wait();
-                //}
+                if (File.Exists(image))
+                {
+                    MakeAnalysisRequest(image).Wait();
+                }
+                else
+                {
+                    Console.WriteLine("something went wrong");
+                }
             }
-            else
-            {
-                Console.WriteLine("\nInvalid file path");
-            }
-            Console.WriteLine("\nPress Enter to exit...");
             Console.ReadLine();
         }
 
@@ -64,14 +45,14 @@ namespace MicrosoftVisionApi
             SqlConnection myConnection = new SqlConnection();
             myConnection.ConnectionString = "Data Source=DESKTOP-NCK5Q5P;" + "Initial Catalog=ImageTagging;" + "Integrated Security=SSPI;";
 
-            try
-            {
-                myConnection.Open();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
+            //try
+            //{
+            //    myConnection.Open();
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.ToString());
+            //}
 
             try
             {
@@ -116,7 +97,7 @@ namespace MicrosoftVisionApi
                 //var id = jo["tags"][1]["name"].ToString();
                 //Console.WriteLine(jo);
                 SqlCommand myCommand = new SqlCommand($"INSERT INTO ImagesWithTags (picture, tags) Values ('{imageFilePath}', '{JToken.Parse(contentString)}')", myConnection);
-                myCommand.ExecuteNonQuery();
+                //myCommand.ExecuteNonQuery();
             }
             catch (Exception e)
             {
@@ -132,21 +113,21 @@ namespace MicrosoftVisionApi
         static byte[] GetImageAsByteArray(string imageFilePath)
         {
 
-            string someUrl = "https://wallpaperbrowse.com/media/images/3848765-wallpaper-images-download.jpg";
-            using (var webClient = new WebClient())
-            {
-                byte[] imageBytes = webClient.DownloadData(someUrl);
-                return imageBytes;
-            }
-
-
-            //using (FileStream fileStream =
-            //    new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
+            //string someUrl = "https://wallpaperbrowse.com/media/images/3848765-wallpaper-images-download.jpg";
+            //using (var webClient = new WebClient())
             //{
-            //    BinaryReader binaryReader = new BinaryReader(fileStream);
-            //    //Console.WriteLine(binaryReader.ReadBytes((int)fileStream.Length));
-            //    return binaryReader.ReadBytes((int)fileStream.Length);
+            //    byte[] imageBytes = webClient.DownloadData(someUrl);
+            //    return imageBytes;
             //}
+
+
+            using (FileStream fileStream =
+                new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader binaryReader = new BinaryReader(fileStream);
+                //Console.WriteLine(binaryReader.ReadBytes((int)fileStream.Length));
+                return binaryReader.ReadBytes((int)fileStream.Length);
+            }
         }
     }
 }
