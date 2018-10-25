@@ -57,7 +57,7 @@ namespace MicrosoftVisionApi
         static void Main()
         {
             // Code to upload a single image by filepath
-            string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/trick-dog-trick-malinois-dog-show-trick-37735-medium.jpeg";
+            string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 620.jpg";
 
             if (File.Exists(filePath))
             {
@@ -91,7 +91,7 @@ namespace MicrosoftVisionApi
         static async Task MakeAnalysisRequest(string imageFilePath)
         {
             SqlConnection myConnection = new SqlConnection();
-            myConnection.ConnectionString = "Data Source=LAPTOP-OBPEB7SF;" + "Initial Catalog=ImageTagging;" + "Integrated Security=SSPI;";
+            myConnection.ConnectionString = "Data Source=DESKTOP-SMB5I56;" + "Initial Catalog=ImageTagging;" + "Integrated Security=SSPI;";
 
             //try
             //{

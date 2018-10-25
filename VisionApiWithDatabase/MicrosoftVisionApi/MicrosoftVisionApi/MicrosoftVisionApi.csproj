@@ -55,9 +55,13 @@
   <ItemGroup>
     <Content Include="Images\animal-dog-pet-fur-medium.jpeg" />
     <Content Include="Images\Cool Collection 2 021.jpg" />
+    <Content Include="Images\Cool Collection 2 140.jpg" />
+    <Content Include="Images\Cool Collection 2 243.jpg" />
     <Content Include="Images\Cool Collection 2 457.jpg" />
     <Content Include="Images\Cool Collection 2 474.jpg" />
     <Content Include="Images\Cool Collection 2 476.jpg" />
+    <Content Include="Images\Cool Collection 2 542.jpg" />
+    <Content Include="Images\Cool Collection 2 620.jpg" />
     <Content Include="Images\Digital Marketing 42.jpg" />
     <Content Include="Images\Do Your Work 92.jpg" />
     <Content Include="Images\Dreamers 07.jpg" />
