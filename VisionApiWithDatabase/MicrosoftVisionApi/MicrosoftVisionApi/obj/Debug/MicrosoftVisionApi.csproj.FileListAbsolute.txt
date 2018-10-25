@@ -18,3 +18,13 @@ C:\Users\alexp\Documents\Overig\ImageTagging\VisionApiWithDatabase\MicrosoftVisi
 C:\Users\alexp\Documents\Overig\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.csproj.CopyComplete
 C:\Users\alexp\Documents\Overig\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.exe
 C:\Users\alexp\Documents\Overig\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.pdb
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\MicrosoftVisionApi.exe.config
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\MicrosoftVisionApi.exe
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\MicrosoftVisionApi.pdb
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\Newtonsoft.Json.dll
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\bin\Debug\Newtonsoft.Json.xml
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.csprojAssemblyReference.cache
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.csproj.CoreCompileInputs.cache
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.csproj.CopyComplete
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.exe
+C:\Users\alex.post\Documents\Alex Post\ImageTagging\VisionApiWithDatabase\MicrosoftVisionApi\MicrosoftVisionApi\obj\Debug\MicrosoftVisionApi.pdb

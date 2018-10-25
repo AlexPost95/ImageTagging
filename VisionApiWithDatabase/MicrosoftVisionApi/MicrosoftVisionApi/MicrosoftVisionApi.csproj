@@ -53,9 +53,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\animal-dog-pet-fur-medium.jpeg" />
+    <Content Include="Images\Cool Collection 2 021.jpg" />
+    <Content Include="Images\Cool Collection 2 457.jpg" />
+    <Content Include="Images\Cool Collection 2 474.jpg" />
+    <Content Include="Images\Cool Collection 2 476.jpg" />
+    <Content Include="Images\Digital Marketing 42.jpg" />
+    <Content Include="Images\Do Your Work 92.jpg" />
+    <Content Include="Images\Dreamers 07.jpg" />
+    <Content Include="Images\Drinkable 25.jpg" />
+    <Content Include="Images\Earth From Above 16.jpg" />
+    <Content Include="Images\Earthy 28.jpg" />
+    <Content Include="Images\trick-dog-trick-malinois-dog-show-trick-37735-medium.jpeg" />
     <Content Include="Paramore.jpg" />
     <Content Include="scenery.jpg" />
-    <Content Include="stallone.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
