@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MicrosoftVisionApi
@@ -47,7 +48,7 @@ namespace MicrosoftVisionApi
 
     static class Program
     {
-        static private int imageId = 0;
+        static private int imageId = 44;
 
         const string subscriptionKey = "31495f44467e40e5aa8b017852219356";
 
@@ -57,30 +58,31 @@ namespace MicrosoftVisionApi
         static void Main()
         {
             // Code to upload a single image by filepath
-            string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 620.jpg";
+            //string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 620.jpg";
 
-            if (File.Exists(filePath))
-            {
-                MakeAnalysisRequest(filePath).Wait();
-                Console.ReadLine();
-            }
+            //if (File.Exists(filePath))
+            //{
+            //    MakeAnalysisRequest(filePath).Wait();
+            //    Console.ReadLine();
+            //}
 
 
             // Code to upload all the pictures of an entire local directory
-            //string[] filePaths = Directory.GetFiles(@"C:/Users/alexp/Documents/Overig/ImageTagging/VisionApiWithDatabase/ImagesToBeTagged");
+            string[] filePaths = Directory.GetFiles(@"C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/");
 
-            //foreach (string image in filePaths)
-            //{
-            //    if (File.Exists(image))
-            //    {
-            //        MakeAnalysisRequest(image).Wait();
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("something went wrong");
-            //    }
-            //}
-            //Console.ReadLine();
+            foreach (string image in filePaths)
+            {
+                if (File.Exists(image))
+                {
+                    MakeAnalysisRequest(image).Wait();
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    Console.WriteLine("something went wrong");
+                }
+            }
+            Console.ReadLine();
         }
 
         /// <summary>
@@ -93,14 +95,14 @@ namespace MicrosoftVisionApi
             SqlConnection myConnection = new SqlConnection();
             myConnection.ConnectionString = "Data Source=DESKTOP-SMB5I56;" + "Initial Catalog=ImageTagging;" + "Integrated Security=SSPI;";
 
-            //try
-            //{
-            //    myConnection.Open();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.ToString());
-            //}
+            try
+            {
+                myConnection.Open();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
 
             try
             {
@@ -142,12 +144,18 @@ namespace MicrosoftVisionApi
                 //Console.WriteLine("\nResponse:\n\n{0}\n", JToken.Parse(contentString).ToString());
 
                 ImageObject image = JsonConvert.DeserializeObject<ImageObject>(contentString);
-                SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture) Values ('{imageId}', '{imageFilePath}')", myConnection);
-                //insertImageCommand.ExecuteNonQuery();
 
                 foreach (Caption caption in image.description.captions)
                 {
                     Console.WriteLine("Description of the image: \n" + caption.text + "\n\n");
+
+                    // Without Description
+                    SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture) Values ('{imageId}', '{imageFilePath}')", myConnection);
+
+                    // With Description
+                    //SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture, Description) Values ('{imageId}', '{imageFilePath}', '{caption.text}')", myConnection);
+
+                    insertImageCommand.ExecuteNonQuery();
                 }
 
                 Console.WriteLine("Tags for the image: ");
@@ -155,7 +163,7 @@ namespace MicrosoftVisionApi
                 {
                     Console.WriteLine(tag.name);
                     SqlCommand insertTagCommand = new SqlCommand($"INSERT INTO Tag (PictureID, Tag) Values ('{imageId}', '{tag.name}')", myConnection);
-                    //insertTagCommand.ExecuteNonQuery();
+                    insertTagCommand.ExecuteNonQuery();
                 }
                 imageId++;
             }
