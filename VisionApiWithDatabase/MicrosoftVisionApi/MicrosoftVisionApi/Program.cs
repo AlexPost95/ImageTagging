@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -48,8 +47,9 @@ namespace MicrosoftVisionApi
 
     static class Program
     {
-        static private int imageId = 44;
+        static private int imageId = 1;
 
+        // Microsoft Computer Vision Api subscription key
         const string subscriptionKey = "31495f44467e40e5aa8b017852219356";
 
         const string uriBase =
@@ -58,7 +58,7 @@ namespace MicrosoftVisionApi
         static void Main()
         {
             // Code to upload a single image by filepath
-            //string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 620.jpg";
+            //string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 140.jpg";
 
             //if (File.Exists(filePath))
             //{
@@ -75,7 +75,9 @@ namespace MicrosoftVisionApi
                 if (File.Exists(image))
                 {
                     MakeAnalysisRequest(image).Wait();
-                    Thread.Sleep(100);
+
+                    // Delay of 3 seconds to ensure you don't cross the free limit of 20 requests per second
+                    Thread.Sleep(3000);
                 }
                 else
                 {
@@ -112,7 +114,6 @@ namespace MicrosoftVisionApi
                 client.DefaultRequestHeaders.Add(
                     "Ocp-Apim-Subscription-Key", subscriptionKey);
 
-                // Request parameters. A third optional parameter is "details".
                 string requestParameters =
                     "visualFeatures=Tags, Description";
                 //"visualFeatures=Categories,Description,Color";
@@ -141,7 +142,7 @@ namespace MicrosoftVisionApi
                 string contentString = await response.Content.ReadAsStringAsync();
 
                 // Display the JSON response.
-                //Console.WriteLine("\nResponse:\n\n{0}\n", JToken.Parse(contentString).ToString());
+                Console.WriteLine("\nResponse:\n\n{0}\n", JToken.Parse(contentString).ToString());
 
                 ImageObject image = JsonConvert.DeserializeObject<ImageObject>(contentString);
 
@@ -149,11 +150,11 @@ namespace MicrosoftVisionApi
                 {
                     Console.WriteLine("Description of the image: \n" + caption.text + "\n\n");
 
-                    // Without Description
-                    SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture) Values ('{imageId}', '{imageFilePath}')", myConnection);
+                    // Save image without Description
+                    //SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture) Values ('{imageId}', '{imageFilePath}')", myConnection);
 
-                    // With Description
-                    //SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture, Description) Values ('{imageId}', '{imageFilePath}', '{caption.text}')", myConnection);
+                    // Save image with Description
+                    SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture, Description) Values ('{imageId}', '{imageFilePath}', '{caption.text}')", myConnection);
 
                     insertImageCommand.ExecuteNonQuery();
                 }
@@ -165,6 +166,7 @@ namespace MicrosoftVisionApi
                     SqlCommand insertTagCommand = new SqlCommand($"INSERT INTO Tag (PictureID, Tag) Values ('{imageId}', '{tag.name}')", myConnection);
                     insertTagCommand.ExecuteNonQuery();
                 }
+                Console.WriteLine("-------------------------------------------------------------");
                 imageId++;
             }
             catch (Exception e)
@@ -181,21 +183,22 @@ namespace MicrosoftVisionApi
         static byte[] GetImageAsByteArray(string imageFilePath)
         {
 
-            //string someUrl = "https://wallpaperbrowse.com/media/images/3848765-wallpaper-images-download.jpg";
-            //using (var webClient = new WebClient())
-            //{
-            //    byte[] imageBytes = webClient.DownloadData(someUrl);
-            //    return imageBytes;
-            //}
-
-
+            // Use this block if you want to upload a local image
             using (FileStream fileStream =
                 new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
             {
                 BinaryReader binaryReader = new BinaryReader(fileStream);
-                //Console.WriteLine(binaryReader.ReadBytes((int)fileStream.Length));
                 return binaryReader.ReadBytes((int)fileStream.Length);
             }
+
+
+            //Use this block to upload a url instead of local files
+            //using (var webClient = new WebClient())
+            //{
+            //    byte[] imageBytes = webClient.DownloadData(imageUrl);
+            //    return imageBytes;
+            //}
+
         }
     }
 }
