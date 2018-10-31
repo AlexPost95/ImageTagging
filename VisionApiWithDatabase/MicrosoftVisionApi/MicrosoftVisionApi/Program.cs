@@ -57,16 +57,6 @@ namespace MicrosoftVisionApi
 
         static void Main()
         {
-            // Code to upload a single image by filepath
-            //string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 140.jpg";
-
-            //if (File.Exists(filePath))
-            //{
-            //    MakeAnalysisRequest(filePath).Wait();
-            //    Console.ReadLine();
-            //}
-
-
             // Code to upload all the pictures of an entire local directory
             string[] filePaths = Directory.GetFiles(@"C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/");
 
@@ -76,7 +66,7 @@ namespace MicrosoftVisionApi
                 {
                     MakeAnalysisRequest(image).Wait();
 
-                    // Delay of 3 seconds to ensure you don't cross the free limit of 20 requests per second
+                    // Delay of 3 seconds to ensure you don't cross the free limit of 20 requests per minute
                     Thread.Sleep(3000);
                 }
                 else
@@ -85,6 +75,16 @@ namespace MicrosoftVisionApi
                 }
             }
             Console.ReadLine();
+
+
+            // Code to upload a single image by filepath
+            //string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 140.jpg";
+
+            //if (File.Exists(filePath))
+            //{
+            //    MakeAnalysisRequest(filePath).Wait();
+            //    Console.ReadLine();
+            //}
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace MicrosoftVisionApi
             //Use this block to upload a url instead of local files
             //using (var webClient = new WebClient())
             //{
-            //    byte[] imageBytes = webClient.DownloadData(imageUrl);
+            //    byte[] imageBytes = webClient.DownloadData(imageFilePath);
             //    return imageBytes;
             //}
 

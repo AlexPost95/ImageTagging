@@ -9,9 +9,16 @@ Description varchar(1000) null
 )
 
 create table Tag (
-PictureID	int		not null	foreign key references Image(ID),
+PictureID	int		not null	foreign key references Image(ID) on update cascade on delete cascade,
 Tag			varchar(255)	not null
 )
+
+insert into Image(ID, Picture, Description) values (1, 'http://www.thinkstockphotos.com/ts-resources/images/home/TS_AnonHP_462882495_01.jpg', null);
+insert into Tag(PictureID, Tag) values (1, 'Turtle');
+insert into Tag(PictureID, Tag) values (1, 'Nature');
+insert into Tag(PictureID, Tag) values (1, 'Sea');
+insert into Tag(PictureID, Tag) values (1, 'Water');
+insert into Tag(PictureID, Tag) values (1, 'Coral');
 
 /*
 select I.ID, I.Picture, I.Description, T.Tag
