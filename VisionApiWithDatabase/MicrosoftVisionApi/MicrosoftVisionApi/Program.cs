@@ -47,7 +47,7 @@ namespace MicrosoftVisionApi
 
     static class Program
     {
-        static private int imageId = 1;
+        static private int imageId = 788;
 
         // Microsoft Computer Vision Api subscription key
         const string subscriptionKey = "31495f44467e40e5aa8b017852219356";
@@ -57,10 +57,20 @@ namespace MicrosoftVisionApi
 
         static void Main()
         {
-            // Code to upload all the pictures of an entire local directory
-            string[] filePaths = Directory.GetFiles(@"C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/");
+            // Upload and tag the content of an entire folder
+            UploadFolder(Directory.GetFiles(@"C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/"));
 
-            foreach (string image in filePaths)
+            // Upload and tag a single file
+            // UploadSingleFile("C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 140.jpg");
+        }
+
+        /// <summary>
+        /// Upload an entire folder
+        /// </summary>
+        /// <param name="folderPath"></param>
+        static void UploadFolder(string [] folderPath)
+        {
+            foreach (string image in folderPath)
             {
                 if (File.Exists(image))
                 {
@@ -75,16 +85,19 @@ namespace MicrosoftVisionApi
                 }
             }
             Console.ReadLine();
+        }
 
-
-            // Code to upload a single image by filepath
-            //string filePath = "C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 140.jpg";
-
-            //if (File.Exists(filePath))
-            //{
-            //    MakeAnalysisRequest(filePath).Wait();
-            //    Console.ReadLine();
-            //}
+        /// <summary>
+        /// Upload a single file
+        /// </summary>
+        /// <param name="filePath"></param>
+        static void UploadSingleFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                MakeAnalysisRequest(filePath).Wait();
+                Console.ReadLine();
+            }
         }
 
         /// <summary>
@@ -134,14 +147,14 @@ namespace MicrosoftVisionApi
                     content.Headers.ContentType =
                         new MediaTypeHeaderValue("application/octet-stream");
 
-                    // Make the REST API call.
+                    // Make the REST API call
                     response = await client.PostAsync(uri, content);
                 }
 
-                // Get the JSON response.
+                // Get the JSON response
                 string contentString = await response.Content.ReadAsStringAsync();
 
-                // Display the JSON response.
+                // Display the JSON response
                 Console.WriteLine("\nResponse:\n\n{0}\n", JToken.Parse(contentString).ToString());
 
                 ImageObject image = JsonConvert.DeserializeObject<ImageObject>(contentString);
@@ -198,7 +211,6 @@ namespace MicrosoftVisionApi
             //    byte[] imageBytes = webClient.DownloadData(imageFilePath);
             //    return imageBytes;
             //}
-
         }
     }
 }
