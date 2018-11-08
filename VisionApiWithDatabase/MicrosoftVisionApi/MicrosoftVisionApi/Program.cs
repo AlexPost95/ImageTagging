@@ -47,13 +47,12 @@ namespace MicrosoftVisionApi
 
     static class Program
     {
-        static private int imageId = 788;
+        static private int imageId = 50;
 
         // Microsoft Computer Vision Api subscription key
-        const string subscriptionKey = "31495f44467e40e5aa8b017852219356";
+        const string visionApiSubscriptionKey = "31495f44467e40e5aa8b017852219356";
 
-        const string uriBase =
-            "https://westeurope.api.cognitive.microsoft.com/vision/v2.0/analyze";
+        const string uriBase = "https://westeurope.api.cognitive.microsoft.com/vision/v2.0/analyze";
 
         static void Main()
         {
@@ -67,7 +66,7 @@ namespace MicrosoftVisionApi
         /// <summary>
         /// Upload an entire folder
         /// </summary>
-        /// <param name="folderPath"></param>
+        /// <param name="folderPath">The path of the folder that needs to be analyzed</param>
         static void UploadFolder(string [] folderPath)
         {
             foreach (string image in folderPath)
@@ -90,7 +89,7 @@ namespace MicrosoftVisionApi
         /// <summary>
         /// Upload a single file
         /// </summary>
-        /// <param name="filePath"></param>
+        /// <param name="filePath">The path of the file that needs to be analyzed</param>
         static void UploadSingleFile(string filePath)
         {
             if (File.Exists(filePath))
@@ -101,8 +100,7 @@ namespace MicrosoftVisionApi
         }
 
         /// <summary>
-        /// Gets the analysis of the specified image file by using
-        /// the Computer Vision REST API.
+        /// Gets the analysis of the specified image file by using the Computer Vision REST API.
         /// </summary>
         /// <param name="imageFilePath">The image file to analyze.</param>
         static async Task MakeAnalysisRequest(string imageFilePath)
@@ -123,13 +121,19 @@ namespace MicrosoftVisionApi
             {
                 HttpClient client = new HttpClient();
 
-                // Request headers.
-                client.DefaultRequestHeaders.Add(
-                    "Ocp-Apim-Subscription-Key", subscriptionKey);
+                // Request headers
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", visionApiSubscriptionKey);
 
-                string requestParameters =
-                    "visualFeatures=Tags, Description";
-                //"visualFeatures=Categories,Description,Color";
+                bool description = false;
+
+                //Supported options for visualFeatures: Tags, Description
+                //Depending on the options selected the request will be executed with or without Description. The Tag option is mandatory, Description is optional
+                string requestParameters = "visualFeatures=Tags, Description";
+                
+                if (requestParameters.Contains("Description"))
+                {
+                    description = true;
+                }
 
                 // Assemble the URI for the REST API Call.
                 string uri = uriBase + "?" + requestParameters;
@@ -141,9 +145,7 @@ namespace MicrosoftVisionApi
 
                 using (ByteArrayContent content = new ByteArrayContent(byteData))
                 {
-                    // This example uses content type "application/octet-stream".
-                    // The other content types you can use are "application/json"
-                    // and "multipart/form-data".
+ 
                     content.Headers.ContentType =
                         new MediaTypeHeaderValue("application/octet-stream");
 
@@ -157,21 +159,28 @@ namespace MicrosoftVisionApi
                 // Display the JSON response
                 Console.WriteLine("\nResponse:\n\n{0}\n", JToken.Parse(contentString).ToString());
 
+                // Deserialize the JSON to an ImageObject
                 ImageObject image = JsonConvert.DeserializeObject<ImageObject>(contentString);
 
-                foreach (Caption caption in image.description.captions)
+                if (description == true)
                 {
-                    Console.WriteLine("Description of the image: \n" + caption.text + "\n\n");
+                    foreach (Caption caption in image.description.captions)
+                    {
+                        Console.WriteLine("Description of the image: \n" + caption.text + "\n\n");
 
+                        // Save image with Description
+                        SqlCommand insertImageWithDescriptionCommand = new SqlCommand($"INSERT INTO Image (ID, Picture, Description) Values ('{imageId}', '{imageFilePath}', '{caption.text}')", myConnection);
+
+                        insertImageWithDescriptionCommand.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
                     // Save image without Description
-                    //SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture) Values ('{imageId}', '{imageFilePath}')", myConnection);
-
-                    // Save image with Description
-                    SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture, Description) Values ('{imageId}', '{imageFilePath}', '{caption.text}')", myConnection);
-
+                    SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture) Values ('{imageId}', '{imageFilePath}')", myConnection);
                     insertImageCommand.ExecuteNonQuery();
                 }
-
+           
                 Console.WriteLine("Tags for the image: ");
                 foreach (Tag tag in image.tags)
                 {
