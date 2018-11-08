@@ -47,7 +47,7 @@ namespace MicrosoftVisionApi
 
     static class Program
     {
-        static private int imageId = 50;
+        static private int imageId = 1;
 
         // Microsoft Computer Vision Api subscription key
         const string visionApiSubscriptionKey = "31495f44467e40e5aa8b017852219356";
@@ -162,7 +162,7 @@ namespace MicrosoftVisionApi
                 // Deserialize the JSON to an ImageObject
                 ImageObject image = JsonConvert.DeserializeObject<ImageObject>(contentString);
 
-                if (description == true)
+                if (description)
                 {
                     foreach (Caption caption in image.description.captions)
                     {
