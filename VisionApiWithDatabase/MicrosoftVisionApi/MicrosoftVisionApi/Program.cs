@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Net.Http;
@@ -57,7 +58,7 @@ namespace MicrosoftVisionApi
         static void Main()
         {
             // Upload and tag the content of an entire folder
-            UploadFolder(Directory.GetFiles(@"C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/"));
+            UploadFolder(Directory.GetFiles(@"C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/ToTag/"));
 
             // Upload and tag a single file
             // UploadSingleFile("C:/Users/alex.post/Documents/Alex Post/ImageTagging/VisionApiWithDatabase/MicrosoftVisionApi/MicrosoftVisionApi/Images/Cool Collection 2 140.jpg");
@@ -76,7 +77,7 @@ namespace MicrosoftVisionApi
                     MakeAnalysisRequest(image).Wait();
 
                     // Delay of 3 seconds to ensure you don't cross the free limit of 20 requests per minute
-                    Thread.Sleep(3000);
+                    //Thread.Sleep(3000);
                 }
                 else
                 {
@@ -169,7 +170,12 @@ namespace MicrosoftVisionApi
                         Console.WriteLine("Description of the image: \n" + caption.text + "\n\n");
 
                         // Save image with Description
-                        SqlCommand insertImageWithDescriptionCommand = new SqlCommand($"INSERT INTO Image (ID, Picture, Description) Values ('{imageId}', '{imageFilePath}', '{caption.text}')", myConnection);
+                        SqlCommand insertImageWithDescriptionCommand = new SqlCommand($"INSERT INTO Image (ID, ImageFilePath, Picture, Description) Values (@ID, @ImageFilePath, @Picture, @Description)", myConnection);
+    
+                        insertImageWithDescriptionCommand.Parameters.Add("@ID", SqlDbType.Int).Value = imageId;
+                        insertImageWithDescriptionCommand.Parameters.Add("@ImageFilePath", SqlDbType.VarChar).Value = imageFilePath;
+                        insertImageWithDescriptionCommand.Parameters.Add("@Picture", SqlDbType.VarBinary).Value = byteData;
+                        insertImageWithDescriptionCommand.Parameters.Add("@Description", SqlDbType.VarChar).Value = caption.text;
 
                         insertImageWithDescriptionCommand.ExecuteNonQuery();
                     }
@@ -177,7 +183,12 @@ namespace MicrosoftVisionApi
                 else
                 {
                     // Save image without Description
-                    SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, Picture) Values ('{imageId}', '{imageFilePath}')", myConnection);
+                    SqlCommand insertImageCommand = new SqlCommand($"INSERT INTO Image (ID, ImageFilePath, Picture) Values (@ID, @ImageFilePath, @Picture)", myConnection);
+
+                    insertImageCommand.Parameters.Add("@ID", SqlDbType.Int).Value = imageId;
+                    insertImageCommand.Parameters.Add("@ImageFilePath", SqlDbType.VarChar).Value = imageFilePath;
+                    insertImageCommand.Parameters.Add("@Picture", SqlDbType.VarBinary).Value = byteData;
+
                     insertImageCommand.ExecuteNonQuery();
                 }
            
@@ -185,7 +196,11 @@ namespace MicrosoftVisionApi
                 foreach (Tag tag in image.tags)
                 {
                     Console.WriteLine(tag.name);
-                    SqlCommand insertTagCommand = new SqlCommand($"INSERT INTO Tag (PictureID, Tag) Values ('{imageId}', '{tag.name}')", myConnection);
+                    SqlCommand insertTagCommand = new SqlCommand($"INSERT INTO Tag (PictureID, Tag) Values (@PictureID, @Tag)", myConnection);
+
+                    insertTagCommand.Parameters.Add("@PictureID", SqlDbType.Int).Value = imageId;
+                    insertTagCommand.Parameters.Add("@Tag", SqlDbType.VarChar).Value = tag.name;
+
                     insertTagCommand.ExecuteNonQuery();
                 }
                 Console.WriteLine("-------------------------------------------------------------");

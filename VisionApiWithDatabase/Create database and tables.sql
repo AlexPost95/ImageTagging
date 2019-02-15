@@ -1,10 +1,12 @@
+/*
 create database ImageTagging;
 
 use ImageTagging;
 
 create table Image (
-ID		int		not null	primary key	,
-Picture	Image	not null,
+ID		int		not null	primary key,
+ImageFilePath varchar(max) not null,
+Picture	varchar(max) not null,
 Description varchar(1000) null
 )
 
@@ -20,8 +22,14 @@ insert into Tag(PictureID, Tag) values (1, 'Sea');
 insert into Tag(PictureID, Tag) values (1, 'Water');
 insert into Tag(PictureID, Tag) values (1, 'Coral');
 
+*/
+
 /*
-select I.ID, I.Picture, I.Description, T.Tag
+select I.ID, I.ImageFilePath, I.Picture, I.Description, T.Tag
+from Image I inner join Tag T on I.ID = T.PictureID
+order by I.ID asc
+
+select I.ID, I.Picture, T.Tag
 from Image I inner join Tag T on I.ID = T.PictureID
 order by I.ID asc
 

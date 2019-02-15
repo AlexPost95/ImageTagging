@@ -69,6 +69,15 @@
     <Content Include="Images\trick-dog-trick-malinois-dog-show-trick-37735-medium.jpeg" />
     <Content Include="Paramore.jpg" />
     <Content Include="scenery.jpg" />
+    <Content Include="ToTag\150887-ferrari-portofino-2018-1600-02.jpg" />
+    <Content Include="ToTag\5ad8eadbbd967148008b4640-750-563.jpg" />
+    <Content Include="ToTag\arma3_jetsdlc_screenshot_01.jpg" />
+    <Content Include="ToTag\CA198B89-ECAE-49FA-82EB4688CA54EBD1_source.jpg" />
+    <Content Include="ToTag\download.jpg" />
+    <Content Include="ToTag\https___blogs-images.forbes.com_annabel_files_2018_02_Louisville_Skyline-1200x801.jpg" />
+    <Content Include="ToTag\pexels-photo-459225.jpeg" />
+    <Content Include="ToTag\spa-francorchamps.jpg" />
+    <Content Include="ToTag\_104398786_b8f788b8-5293-46c2-87db-91d9b7b0530c.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
